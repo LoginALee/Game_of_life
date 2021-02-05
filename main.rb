@@ -1,4 +1,5 @@
-require_relative 'TableTest'
+require_relative 'cell'
+require_relative 'board'
 
-table2 = TableTest.new
-table2.print_grid()
+board1 = Board.new(4,4)
+board1.drawBoard()
