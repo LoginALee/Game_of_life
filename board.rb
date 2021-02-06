@@ -13,12 +13,12 @@ class Board
   def makeBoard
     grid = Array.new(@columns) 
 
-    for i in 0..grid.length
+    for i in 0...grid.length
       grid[i] = Array.new(@rows)
     end
 
-    for i in 0..@columns
-      for j in 0..@rows
+    for i in 0...@columns
+      for j in 0...@rows
         cell1 = Cell.new
         chanceNumber = rand(2)
          
@@ -41,12 +41,11 @@ class Board
   end
 
   def nextBoard
-    nextBoard = self.makeBoard()
+    nextBoard = @board
     grid = nextBoard
-    prevBoard = @board 
     #Live neighbors    
-    for i in 0..@columns
-      for j in 0..@rows
+    for i in 0...@columns
+      for j in 0...@rows
         state = grid[i][j]
          neighbors = self.countNeighbors(grid,i,j) 
 
