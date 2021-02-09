@@ -18,9 +18,6 @@ while play == "\n"
   board2 = Board.new(columns,rows)
   board2.draw_board(prevBoard)
   prevBoard = board2.board.map(&:clone)
-  if play != "\n"
-    break
-  end
 end
 
   
