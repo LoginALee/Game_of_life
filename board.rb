@@ -10,42 +10,37 @@ class Board
   end
  
   def make_board
-    grid = Array.new(@columns) 
-
-    grid.each_with_index do |_column,index|
-      grid[index] = Array.new(@rows)
-    end
-
-    for i in 0...@columns
-      for j in 0...@rows
+    grid = Array.new (@columns) {Array.new(@rows)}
+    @columns.times do |col| 
+      @rows.times do |row|
         cell = Cell.new
-        grid[i][j] = cell.get_print_char
+        grid[col][row] = cell.get_print_char
       end
     end
     grid 
   end
   
   def draw_board(board)
-    for row in board
-      p row 
+    board.each do |row|
+      p row
     end
   end
 
   def next_board
-    next_board = @board
-    grid = next_board.map(&:clone)
-    #Live neighbors    
-    for i in 0...@columns
-      for j in 0...@rows
-        state = grid[i][j]
-        neighbors = count_neighbors(grid,i,j) 
+    next_board = @board.map(&:clone)
+    current_board = next_board.map(&:clone)
+    @colums.times do |col|
+      @rows.times do |row|
 
-        if(state == 'X' && neighbors == 3)
-          next_board[i][j] = 'O'
-        elsif(state == 'O' && (neighbors < 2 || neighbors > 3))
-          next_board[i][j] = 'X'
+        current_cell = current_board[col][row]
+        neighbors = count_neighbors(grid,col,row) 
+
+        if(current_cell.alive? && neighbors == 3)
+          next_board[col][row] = 'O'
+        elsif(!current_cell.alive? && (neighbors < 2 || neighbors > 3))
+          next_board[col][row] = 'X'
         else
-          next_board[i][j] = state
+          next_board[col][row] = state
         end 
       end
     end
@@ -54,8 +49,8 @@ class Board
 
   def count_neighbors(board, x, y)
     sum = 0
-    for i in -1...2
-      for j in -1...2
+    (-1...2).each do | i |
+      (-1...2).each do | j |
 
         col = (x + i + @columns) % @columns
         row = (y + j + @rows) % @rows
