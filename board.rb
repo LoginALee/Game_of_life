@@ -6,10 +6,10 @@ class Board
   def initialize(columns, rows)
     @columns = columns
     @rows = rows
-    @board = makeBoard
+    @board = make_board
   end
  
-  def makeBoard
+  def make_board
     grid = Array.new(@columns) 
 
     grid.each_with_index do |_column,index|
@@ -25,34 +25,34 @@ class Board
     grid 
   end
   
-  def drawBoard(board)
+  def draw_board(board)
     for row in board
       p row 
     end
   end
 
-  def nextBoard
-    nextBoard = @board
-    grid = nextBoard.map(&:clone)
+  def next_board
+    next_board = @board
+    grid = next_board.map(&:clone)
     #Live neighbors    
     for i in 0...@columns
       for j in 0...@rows
         state = grid[i][j]
-        neighbors = countNeighbors(grid,i,j) 
+        neighbors = count_neighbors(grid,i,j) 
 
         if(state == 'X' && neighbors == 3)
-          nextBoard[i][j] = 'O'
+          next_board[i][j] = 'O'
         elsif(state == 'O' && (neighbors < 2 || neighbors > 3))
-          nextBoard[i][j] = 'X'
+          next_board[i][j] = 'X'
         else
-          nextBoard[i][j] = state
+          next_board[i][j] = state
         end 
       end
     end
-   nextBoard
+   next_board
   end
 
-  def countNeighbors(board, x, y)
+  def count_neighbors(board, x, y)
     sum = 0
     for i in -1...2
       for j in -1...2

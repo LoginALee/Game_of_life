@@ -9,14 +9,14 @@ rows = gets.to_i
 board = Board.new(columns, rows)
 play = "\n"
 
-board.drawBoard(board.board)
+board.draw_board(board.board)
 prevBoard = board.board.map(&:clone)
 
 while play == "\n"
   puts "Press enter to see next generation or any letter to exit"
   play = gets 
   board2 = Board.new(columns,rows)
-  board2.drawBoard(prevBoard)
+  board2.draw_board(prevBoard)
   prevBoard = board2.board.map(&:clone)
   if play != "\n"
     break
