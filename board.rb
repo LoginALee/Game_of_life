@@ -21,30 +21,27 @@ class Board
   end
   
   def draw_board(board)
-    board.each do |row|
-      p row
-    end
+    board.each {|row| p row} 
   end
 
   def next_board
-    next_board = @board.map(&:clone)
-    current_board = next_board.map(&:clone)
+    new_board = @board.map(&:clone)
     @colums.times do |col|
       @rows.times do |row|
 
-        current_cell = current_board[col][row]
-        neighbors = count_neighbors(grid,col,row) 
+        current_cell = @board[col][row]
+        neighbors = count_neighbors(@board, col, row) 
 
         if(current_cell.alive? && neighbors == 3)
-          next_board[col][row] = 'O'
+          new_board[col][row] = 'O'
         elsif(!current_cell.alive? && (neighbors < 2 || neighbors > 3))
-          next_board[col][row] = 'X'
+          new_board[col][row] = 'X'
         else
-          next_board[col][row] = state
+          new_board[col][row] = state
         end 
       end
     end
-   next_board
+   new_board
   end
 
   def count_neighbors(board, x, y)
