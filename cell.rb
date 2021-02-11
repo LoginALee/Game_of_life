@@ -1,22 +1,16 @@
 class Cell
   attr_accessor :status
   def initialize
-    @status = 'Dead'
+    @status = rand(2) == 1
   end
-
-  def is_alive
-    if @status == 'Alive'
-      return true
-    else
-      return false
-    end
-  end
-
+  
   def get_print_char
-    if is_alive()
-      return 'O'
-    else
-      return 'X'
-    end
+    alive? ? 'O' : 'X'
+  end
+
+  private
+
+  def alive?
+    @status
   end
 end

@@ -6,20 +6,18 @@ columns = gets.to_i
 puts "And also the number of rows"
 rows = gets.to_i
 
-board1 = Board.new(columns, rows)
+board = Board.new(columns, rows)
 play = "\n"
 
-board1.drawBoard(board1.board)
-prevBoard = board1
+board.draw_board(board.board)
+prevBoard = board.board.map(&:clone)
+
 while play == "\n"
   puts "Press enter to see next generation or any letter to exit"
   play = gets 
   board2 = Board.new(columns,rows)
-  board2.drawBoard(prevBoard.nextBoard())
-  prevBoard = board2
-  if play != "\n"
-    break
-  end
+  board2.draw_board(prevBoard)
+  prevBoard = board2.board.map(&:clone)
 end
 
   

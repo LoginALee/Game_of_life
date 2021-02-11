@@ -6,81 +6,58 @@ class Board
   def initialize(columns, rows)
     @columns = columns
     @rows = rows
-    @board =  self.makeBoard()
+    @board = make_board
   end
-
  
-  def makeBoard
-    grid = Array.new(@columns) 
-
-    for i in 0...grid.length
-      grid[i] = Array.new(@rows)
+  def make_board
+    grid = Array.new (@columns) {Array.new(@rows)}
+    @columns.times do |col| 
+      @rows.times do |row|
+        cell = Cell.new
+        grid[col][row] = cell.get_print_char
+      end
     end
-
-    for i in 0...@columns
-      for j in 0...@rows
-        cell1 = Cell.new
-        chanceNumber = rand(2)
-         
-        if chanceNumber == 1
-          cell1.status = 'Alive'
-        else
-          cell1.status = 'Dead'
-        end
-      grid[i][j] = cell1.get_print_char
-    end
-  end
-    return grid 
+    grid 
   end
   
-  def drawBoard(board)
-    for row in board
-      p row 
-    end
-    puts "\n"
+  def draw_board(board)
+    board.each {|row| p row} 
   end
 
-  def nextBoard
-    nextBoard = @board
-    grid = nextBoard
-    #Live neighbors    
-    for i in 0...@columns
-      for j in 0...@rows
-        state = grid[i][j]
-         neighbors = self.countNeighbors(grid,i,j) 
+  def next_board
+    new_board = @board.map(&:clone)
+    @colums.times do |col|
+      @rows.times do |row|
 
-        if(state == 'X' && neighbors == 3)
-          nextBoard[i][j] = 'O'
-        elsif(state == 'O' && (neighbors < 2 || neighbors > 3))
-          nextBoard[i][j] = 'X'
+        current_cell = @board[col][row]
+        neighbors = count_neighbors(@board, col, row) 
+
+        if(current_cell.alive? && neighbors == 3)
+          new_board[col][row] = 'O'
+        elsif(!current_cell.alive? && (neighbors < 2 || neighbors > 3))
+          new_board[col][row] = 'X'
         else
-          nextBoard[i][j] = state
+          new_board[col][row] = state
         end 
       end
     end
-    return nextBoard
+   new_board
   end
 
-  def countNeighbors(board, x, y)
+  def count_neighbors(board, x, y)
     sum = 0
-    for i in -1..2
-      for j in -1..2
+    (-1...2).each do | i |
+      (-1...2).each do | j |
 
         col = (x + i + @columns) % @columns
         row = (y + j + @rows) % @rows
 
-        if board[col][row] == 'O'
-          sum += 1
-        end
+        sum += 1 if board[col][row] == 'O'
 
       end
     end
-    
-    if board[x][y] == 'O'
-      sum -= 1
-    end
-    
-    return sum
+    sum -= 1 if board[x][y] == 'O'
+    sum
   end
 end
 
